@@ -18,6 +18,10 @@
 .env.test.local
 .env.production.local
 
+# reactide
+reactide.js
+reactide.config.js
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
