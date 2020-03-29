@@ -10,6 +10,7 @@ import '../fonts/iconic/css/material-design-iconic-font.min.css';
 import '../css/util.css';
 import '../css/main.css';
 import { isWebUri } from 'valid-url';
+import teenyIco from '../images/teeny.ico'
 
 const URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm;
 const HTTP = 'http://';
@@ -56,7 +57,7 @@ class TeenyUIFront extends Component {
         event.preventDefault();
         let url = this.state.url.trim();
         if (url.match(URL_REGEX) && !url.startsWith(HTTP) && !url.startsWith(HTTPS)) {
-                url = HTTPS + url;
+                url = HTTP + url;
         }
         if(isWebUri(url)) {
             this.props.formSubmit(url);
@@ -73,7 +74,8 @@ class TeenyUIFront extends Component {
             <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
                 <form className="login100-form validate-form" onSubmit={this.onFormSubmit}>
                     <span className="login100-form-title p-b-49">
-                        Teeny Url
+                        {/* Teeny Url */}
+                        <img src={teenyIco} alt=''/>
                     </span>
                     <div
                         className={`wrap-input100 validate-input m-b-23 ${this.state.alertValidate}`}
@@ -90,7 +92,7 @@ class TeenyUIFront extends Component {
                             onChange={this.onUrlInputChange}
                             onBlur={this.onInputBlur}
                         />
-                        <span className="focus-input100" data-symbol="" />
+                        <span className="focus-input100" data-symbol='🔗' />
                     </div>
                     <div className="text-right p-t-8 p-b-31">
                     </div>

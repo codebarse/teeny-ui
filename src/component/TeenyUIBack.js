@@ -9,6 +9,7 @@ import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import '../fonts/iconic/css/material-design-iconic-font.min.css';
 import '../css/util.css';
 import '../css/main.css';
+import teenyIco from '../images/teeny.ico'
 
 class TeenyUIBack extends Component {
 
@@ -17,7 +18,7 @@ class TeenyUIBack extends Component {
             <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
                 <div className="login100-form">
                     <span className="login100-form-title p-b-49">
-                        Teeny Url
+                        <img src={teenyIco} alt=''/>
                     </span>
                     <div className="wrap-input100 m-b-23">
                         <span className="label-input100">Teeny Url</span>
