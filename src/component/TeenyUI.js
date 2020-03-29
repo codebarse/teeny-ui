@@ -1,61 +1,46 @@
 import React, { Component } from "react";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
-const useStyles = makeStyles(theme => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: '#000000',
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import '../vendor/bootstrap/css/bootstrap.min.css';
+import '../vendor/animate/animate.css';
+import '../vendor/css-hamburgers/hamburgers.min.css';
+import '../vendor/animsition/css/animsition.min.css';
+import '../vendor/select2/select2.min.css';
+import '../vendor/daterangepicker/daterangepicker.css';
+import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
+import '../fonts/iconic/css/material-design-iconic-font.min.css';
+import '../css/util.css';
+import '../css/main.css';
+// import '../js/main.js';
+import BackgroundImage from '../images/bg-01.jpg'
+import ReactCardFlip from 'react-card-flip';
+import TeenyUIBack from "./TeenyUIBack";
+import TeenyUIFront from "./TeenyUIFront";
 
 class TeenyUI extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            value: "",
-            teenyUrl: ""
+            teenyUrl: "",
+            isFlipped: false
         };
 
+        this.handleFlipCard = this.handleFlipCard.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.createTeeny = this.createTeeny.bind(this);
-
     }
 
-    componentDidMount() {
-        // fetch('http://localhost:8080/teeny/1').then(result => {
-        //   return result.json();
-        // }).then(data => {
-        //   this.setState({
-        //     value: data.url
-        //   })
-        //   console.log(data);
-        // })
+    handleFlipCard() {
+        this.setState({ isFlipped: !this.state.isFlipped });
     }
 
-    createTeeny() {
+    handleFormSubmit(url) {
+        this.createTeeny(url);
+    }
+
+    createTeeny(url) {
         let baseUrl = window.location.origin.toString();
-        // console.log("holaaa ", baseUrl);
         let data = {};
-        data["url"] = this.state.value;
+        data["url"] = url;
         fetch('http://34.71.57.140:43256/teeny/create', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -65,61 +50,29 @@ class TeenyUI extends Component {
         }).then(res => {
             return res.json();
         }).then(data => {
+            this.handleFlipCard();
             this.setState({
-                value: "",
-                teenyUrl: baseUrl + '/redirect/' + data.id
+                teenyUrl: baseUrl + '/' + data.id
             })
-            // console.log(data);
         })
     }
+
     render() {
-        const classes = useStyles;
-
         return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        T
-        </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Create Teeny Url
-        </Typography>
+            <div className="limiter">
+                <div className="container-login100" style={{ backgroundImage: "url(" + BackgroundImage + ")" }}>
+                    <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="vertical">
+                        <TeenyUIFront
+                            formSubmit={this.handleFormSubmit}
+                        />
 
-                    <TextField
-                        id="url"
-                        margin="normal"
-                        fullWidth
-                        label="URL"
-                        name="url"
-                        value={this.state.value}
-                        onChange={e => this.setState({ value: e.target.value })}
-                        autoFocus
-                        variant="filled" />
-
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={this.createTeeny}
-                    >
-                        Just Do it
-          </Button>
-
-                    <TextField
-                        id="teenyUrl"
-                        margin="normal"
-                        disabled
-                        fullWidth
-                        label="TeenyUrl"
-                        name="teenyUrl"
-                        value={this.state.teenyUrl}
-                        autoFocus />
-
+                        <TeenyUIBack
+                            teenyUrl={this.state.teenyUrl}
+                            flipCard={this.handleFlipCard}
+                        />
+                    </ReactCardFlip>
                 </div>
-            </Container>
+            </div>
         );
     }
 }

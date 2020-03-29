@@ -10,11 +10,12 @@ import {
 } from "react-router-dom";
 
 function App() {
+  document.title = "Teeny Url";
   return (
     <Router>
       <div>
         <Switch>
-          <Route path="/redirect/:id">
+          <Route path="/:id">
             <Redirect/>
           </Route>
           <Route path="/">

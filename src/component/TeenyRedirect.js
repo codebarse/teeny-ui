@@ -11,9 +11,13 @@ class TeenyRedirect extends Component {
 
     componentDidMount() {
         fetch('http://34.71.57.140:43256/teeny/' + this.props.id).then(result => {
+            // console.log(result);
             return result.json();
         }).then(data => {
-            window.location.replace(data.url);
+            console.log(data);
+            if(data.url !== undefined) {
+                window.location.replace(data.url);
+            }
         })
     }
 
