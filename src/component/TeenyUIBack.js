@@ -17,10 +17,10 @@ class TeenyUIBack extends Component {
             <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
                 <div className="login100-form">
                     <span className="login100-form-title p-b-49">
-                        Teeny
+                        Teeny Url
                     </span>
                     <div className="wrap-input100 m-b-23">
-                        <span className="label-input100">Teeny URL</span>
+                        <span className="label-input100">Teeny Url</span>
                         <input className="input100" type="text" name="url" value={this.props.teenyUrl} readOnly />
                         <span className="focus-input100" data-symbol="" />
                     </div>

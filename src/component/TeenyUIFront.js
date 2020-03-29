@@ -11,6 +11,10 @@ import '../css/util.css';
 import '../css/main.css';
 import { isWebUri } from 'valid-url';
 
+const URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm;
+const HTTP = 'http://';
+const HTTPS = 'https://';
+
 class TeenyUIFront extends Component {
 
     constructor(props) {
@@ -42,13 +46,19 @@ class TeenyUIFront extends Component {
     }
 
     onUrlInputChange(event) {
-        this.setState({ url: event.target.value });
+        this.setState({ 
+            url: event.target.value,
+            alertValidate: ''
+        });
     }
 
     onFormSubmit(event) {
         event.preventDefault();
         let url = this.state.url.trim();
-        if (isWebUri(url)) {
+        if (url.match(URL_REGEX) && !url.startsWith(HTTP) && !url.startsWith(HTTPS)) {
+                url = HTTPS + url;
+        }
+        if(isWebUri(url)) {
             this.props.formSubmit(url);
             this.setState({ url: '' });
         }
@@ -63,13 +73,13 @@ class TeenyUIFront extends Component {
             <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
                 <form className="login100-form validate-form" onSubmit={this.onFormSubmit}>
                     <span className="login100-form-title p-b-49">
-                        Teeny
+                        Teeny Url
                     </span>
                     <div
                         className={`wrap-input100 validate-input m-b-23 ${this.state.alertValidate}`}
-                        data-validate="URL is empty, incomplete or invalid"
+                        data-validate="Invalid Url"
                     >
-                        <span className="label-input100">UGLY URL</span>
+                        <span className="label-input100">Long Url</span>
                         <input
                             className={`input100 ${this.state.hasVal}`}
                             type="text"
