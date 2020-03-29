@@ -9,7 +9,7 @@ import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import '../fonts/iconic/css/material-design-iconic-font.min.css';
 import '../css/util.css';
 import '../css/main.css';
-// import '../js/main.js';
+import { isWebUri } from 'valid-url';
 
 class TeenyUIFront extends Component {
 
@@ -17,14 +17,28 @@ class TeenyUIFront extends Component {
         super(props);
 
         this.state = {
-            url: ""
+            url: "",
+            hasVal: '',
+            alertValidate: ''
         }
         this.onUrlInputChange = this.onUrlInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.onInputBlur = this.onInputBlur.bind(this);
+        this.onInputFocus = this.onInputFocus.bind(this);
     }
 
     onInputBlur() {
+        if (this.state.url.trim() !== "") {
+            this.setState({ hasVal: 'has-val' });
+        }
+        else {
+            this.setState({ hasVal: '' });
+        }
+    }
 
+    onInputFocus() {
+        //hide validate
+        this.setState({ alertValidate: '' });
     }
 
     onUrlInputChange(event) {
@@ -33,7 +47,15 @@ class TeenyUIFront extends Component {
 
     onFormSubmit(event) {
         event.preventDefault();
-        this.props.formSubmit(this.state.url);
+        let url = this.state.url.trim();
+        if (isWebUri(url)) {
+            this.props.formSubmit(url);
+            this.setState({ url: '' });
+        }
+        else {
+            //show validate
+            this.setState({ alertValidate: 'alert-validate' });
+        }
     }
 
     render() {
@@ -43,12 +65,20 @@ class TeenyUIFront extends Component {
                     <span className="login100-form-title p-b-49">
                         Teeny
                     </span>
-                    <div className="wrap-input100 validate-input m-b-23" data-validate="URL is empty or invalid">
+                    <div
+                        className={`wrap-input100 validate-input m-b-23 ${this.state.alertValidate}`}
+                        data-validate="URL is empty, incomplete or invalid"
+                    >
                         <span className="label-input100">UGLY URL</span>
-                        <input className="input100" type="text" name="url" placeholder="Enter URL"
+                        <input
+                            className={`input100 ${this.state.hasVal}`}
+                            type="text"
+                            name="url"
+                            placeholder="Enter URL"
+                            onFocus={this.onInputFocus}
                             value={this.state.url}
                             onChange={this.onUrlInputChange}
-                            onBlur
+                            onBlur={this.onInputBlur}
                         />
                         <span className="focus-input100" data-symbol="" />
                     </div>

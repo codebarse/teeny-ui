@@ -9,7 +9,6 @@ import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import '../fonts/iconic/css/material-design-iconic-font.min.css';
 import '../css/util.css';
 import '../css/main.css';
-// import '../js/main.js';
 import BackgroundImage from '../images/bg-01.jpg'
 import ReactCardFlip from 'react-card-flip';
 import TeenyUIBack from "./TeenyUIBack";

@@ -9,12 +9,11 @@ import '../fonts/font-awesome-4.7.0/css/font-awesome.min.css';
 import '../fonts/iconic/css/material-design-iconic-font.min.css';
 import '../css/util.css';
 import '../css/main.css';
-// import '../js/main.js';
 
 class TeenyUIBack extends Component {
 
     render() {
-        return(
+        return (
             <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
                 <div className="login100-form">
                     <span className="login100-form-title p-b-49">
