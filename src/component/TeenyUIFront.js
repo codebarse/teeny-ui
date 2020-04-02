@@ -25,7 +25,7 @@ class TeenyUIFront extends Component {
             url: "",
             hasVal: '',
             alertValidate: ''
-        }
+        };
         this.onUrlInputChange = this.onUrlInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onInputBlur = this.onInputBlur.bind(this);
@@ -82,6 +82,8 @@ class TeenyUIFront extends Component {
                         data-validate="Invalid Url"
                     >
                         <span className="label-input100">Long Url</span>
+                        {/* 🔗 ⮕*/}
+                        <span className="focus-input100" data-symbol='→' />
                         <input
                             className={`input100 ${this.state.hasVal}`}
                             type="text"
@@ -92,7 +94,6 @@ class TeenyUIFront extends Component {
                             onChange={this.onUrlInputChange}
                             onBlur={this.onInputBlur}
                         />
-                        <span className="focus-input100" data-symbol='🔗' />
                     </div>
                     <div className="text-right p-t-8 p-b-31">
                     </div>

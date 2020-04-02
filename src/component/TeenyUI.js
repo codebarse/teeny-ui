@@ -51,7 +51,7 @@ class TeenyUI extends Component {
         }).then(data => {
             this.handleFlipCard();
             this.setState({
-                teenyUrl: baseUrl + '/' + data.id
+                teenyUrl: baseUrl + '/' + data.teenyUrl
             })
         })
     }

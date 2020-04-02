@@ -441,6 +441,70 @@ iframe {
 }
 
 
+/*------------------------------------------------------------------
+[ Copy URL ]*/
+
+.copy-url::before {
+  content: attr(copy-url);
+  position: absolute;
+  max-width: 70%;
+  background-color: #fff;
+  border: 1px solid #230afd;
+  border-radius: 2px;
+  padding: 4px 25px 4px 10px;
+  bottom: calc((100% - 20px) / 2);
+  -webkit-transform: translateY(50%);
+  -moz-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  -o-transform: translateY(50%);
+  transform: translateY(50%);
+  right: 2px;
+  pointer-events: none;
+
+  font-family: Poppins-Regular;
+  color: #230afd;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+
+  visibility: hidden;
+  opacity: 0;
+
+  -webkit-transition: opacity 0.4s;
+  -o-transition: opacity 0.4s;
+  -moz-transition: opacity 0.4s;
+  transition: opacity 0.4s;
+}
+
+.copy-url::after {
+  content: "\f0c5";
+  font-family: FontAwesome;
+  display: block;
+  position: absolute;
+  color: #230afd;
+  font-size: 16px;
+  bottom: calc((100% - 20px) / 2);
+  -webkit-transform: translateY(50%);
+  -moz-transform: translateY(50%);
+  -ms-transform: translateY(50%);
+  -o-transform: translateY(50%);
+  transform: translateY(50%);
+  right: 8px;
+}
+
+.copy-url:hover:before {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (max-width: 992px) {
+  .copy-url::before {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+
 /*//////////////////////////////////////////////////////////////////
 [ Social item ]*/
 .login100-social-item {
