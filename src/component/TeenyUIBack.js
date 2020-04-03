@@ -42,7 +42,7 @@ class TeenyUIBack extends Component {
                         onCopy={this.onCopyToClipboard}
                         text={this.props.teenyUrl}
                     >
-                        <div className="wrap-input100 m-b-23 copy-url"
+                        <div className="wrap-input100 m-b-23 copy-url" onMouseLeave={() => { this.setState({ copyUrlText: 'Copy Url' }) }}
                             copy-url={this.state.copyUrlText}>
                             <span className="label-input100">Teeny Url</span>
                             {/*  → */}
