@@ -40,7 +40,7 @@ class TeenyUI extends Component {
         let baseUrl = window.location.origin.toString();
         let data = {};
         data["url"] = url;
-        fetch('http://34.71.57.140:43256/teeny/create', {
+        fetch('https://api.teeny.sppk.in/teeny/create', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
