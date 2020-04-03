@@ -10,7 +10,6 @@ import {
 } from "react-router-dom";
 
 function App() {
-  document.title = "Teeny Url";
   return (
     <Router>
       <div>
