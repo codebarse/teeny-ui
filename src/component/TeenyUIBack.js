@@ -38,15 +38,15 @@ class TeenyUIBack extends Component {
                     <span className="login100-form-title p-b-49">
                         <img src={teenyIco} alt='' />
                     </span>
-                    <div className="wrap-input100 m-b-23 copy-url"
-                        copy-url={this.state.copyUrlText}>
-                        <span className="label-input100">Teeny Url</span>
-                        {/*  → */}
-                        <span className="focus-input100" data-symbol="→" />
-                        <CopyToClipboard 
-                            onCopy={this.onCopyToClipboard}
-                            text={this.props.teenyUrl}
-                        >
+                    <CopyToClipboard
+                        onCopy={this.onCopyToClipboard}
+                        text={this.props.teenyUrl}
+                    >
+                        <div className="wrap-input100 m-b-23 copy-url"
+                            copy-url={this.state.copyUrlText}>
+                            <span className="label-input100">Teeny Url</span>
+                            {/*  → */}
+                            <span className="focus-input100" data-symbol="→" />
                             <input
                                 className="input100"
                                 type="text"
@@ -54,8 +54,8 @@ class TeenyUIBack extends Component {
                                 value={this.props.teenyUrl}
                                 readOnly
                             />
-                        </CopyToClipboard>
-                    </div>
+                        </div>
+                    </CopyToClipboard>
                     <div className="text-right p-t-8 p-b-31">
                     </div>
                     <div className="container-login100-form-btn">
