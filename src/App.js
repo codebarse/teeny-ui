@@ -15,7 +15,7 @@ function App() {
       <div>
         <Switch>
           <Route path="/:id">
-            <Redirect/>
+            <Redirect />
           </Route>
           <Route path="/">
             <TeenyUI />
@@ -29,7 +29,7 @@ function App() {
 
 function Redirect() {
   let { id } = useParams();
-  return <TeenyRedirect id={id}/>
+  return <TeenyRedirect id={id} />
 }
 
 export default App;

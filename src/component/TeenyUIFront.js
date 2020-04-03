@@ -47,7 +47,7 @@ class TeenyUIFront extends Component {
     }
 
     onUrlInputChange(event) {
-        this.setState({ 
+        this.setState({
             url: event.target.value,
             alertValidate: ''
         });
@@ -57,9 +57,9 @@ class TeenyUIFront extends Component {
         event.preventDefault();
         let url = this.state.url.trim();
         if (url.match(URL_REGEX) && !url.startsWith(HTTP) && !url.startsWith(HTTPS)) {
-                url = HTTP + url;
+            url = HTTP + url;
         }
-        if(isWebUri(url)) {
+        if (isWebUri(url)) {
             this.props.formSubmit(url);
             this.setState({ url: '' });
         }
@@ -75,7 +75,7 @@ class TeenyUIFront extends Component {
                 <form className="login100-form validate-form" onSubmit={this.onFormSubmit}>
                     <span className="login100-form-title p-b-49">
                         {/* Teeny Url */}
-                        <img src={teenyIco} alt=''/>
+                        <img src={teenyIco} alt='' />
                     </span>
                     <div
                         className={`wrap-input100 validate-input m-b-23 ${this.state.alertValidate}`}
