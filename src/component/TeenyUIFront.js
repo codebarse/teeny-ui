@@ -11,14 +11,13 @@ import '../css/util.css';
 import '../css/main.css';
 import { isWebUri } from 'valid-url';
 import teenyIco from '../images/teeny.ico'
+import ParticleEffectButton from 'react-particle-effect-button'
 
 const URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm;
 const HTTP = 'http://';
 const HTTPS = 'https://';
 const HAS_VAL_CLASS = 'has-val';
 const ALERT_VALIDATE_CLASS = 'alert-validate';
-const CONVERT = 'Convert';
-const LOADING = 'Loading...';
 
 class TeenyUIFront extends Component {
 
@@ -31,7 +30,6 @@ class TeenyUIFront extends Component {
             alertValidate: '',
             teenyUrl: '',
             originalUrl: '',
-            submitButtonText: CONVERT
         };
         this.onUrlInputChange = this.onUrlInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -79,10 +77,10 @@ class TeenyUIFront extends Component {
     }
 
     handleFormSubmit(url, originalUrl) {
-        this.setState({ 
+        this.setState({
             originalUrl: originalUrl,
-            submitButtonText: LOADING
         });
+        this.props.submitButtonHiddenToggle();
         this.createTeeny(url);
     }
 
@@ -101,8 +99,7 @@ class TeenyUIFront extends Component {
         }).then(data => {
             this.setState({
                 teenyUrl: baseUrl.replace(/(^\w+:|^)\/\//, '') + '/' + data.teenyUrl,
-                url: '',
-                submitButtonText: CONVERT
+                url: ''
             })
             this.props.setUrls(this.state.originalUrl, this.state.teenyUrl)
             this.props.flipCard();
@@ -137,14 +134,27 @@ class TeenyUIFront extends Component {
                     </div>
                     <div className="text-right p-t-8 p-b-31">
                     </div>
+
                     <div className="container-login100-form-btn">
                         <div className="wrap-login100-form-btn">
                             <div className="login100-form-bgbtn" />
+
                             <button className="login100-form-btn">
-                                {this.state.submitButtonText}
+                                <ParticleEffectButton
+                                    color='#FFFFFF'
+                                    hidden={this.props.submitButtonHidden}
+                                    type='rectangle'
+                                    duration={500}
+                                    particlesAmountCoefficient={5}
+                                    // onComplete={() => { this.setState({ submitButtonHidden: false }); }}
+                                >
+                                    Convert
+                                </ParticleEffectButton>
                             </button>
+
                         </div>
                     </div>
+                    {/* </ParticleEffectButton> */}
                 </form>
             </div>
         );

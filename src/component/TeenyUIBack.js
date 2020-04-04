@@ -23,12 +23,18 @@ class TeenyUIBack extends Component {
         };
 
         this.onCopyTeenyUrlToClipboard = this.onCopyTeenyUrlToClipboard.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     onCopyTeenyUrlToClipboard() {
         this.setState({
             copyTeenyUrlText: 'Copied'
         });
+    }
+
+    handleClick() {
+        this.props.flipCard();
+        this.props.submitButtonHiddenToggle();
     }
 
     render() {
@@ -56,7 +62,7 @@ class TeenyUIBack extends Component {
                             />
                         </div>
                     </CopyToClipboard>
-                                        <div className="text-right p-t-8 p-b-31">
+                    <div className="text-right p-t-8 p-b-31">
                     </div>
                     <div className="wrap-input100-2 m-b-23">
                         <span className="label-input100-2">Long Url - {this.props.longUrl.length} characters</span>
@@ -75,7 +81,7 @@ class TeenyUIBack extends Component {
                     <div className="container-login100-form-btn">
                         <div className="wrap-login100-form-btn">
                             <div className="login100-form-bgbtn" />
-                            <button onClick={this.props.flipCard} className="login100-form-btn">
+                            <button onClick={this.handleClick} className="login100-form-btn">
                                 Convert Another URL
                             </button>
                         </div>

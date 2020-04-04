@@ -21,11 +21,13 @@ class TeenyUI extends Component {
         this.state = {
             teenyUrl: "",
             isFlipped: false,
-            longUrl: ""
+            longUrl: "",
+            submitButtonHidden: false
         };
 
         this.handleFlipCard = this.handleFlipCard.bind(this);
         this.setUrls = this.setUrls.bind(this);
+        this.submitButtonHiddenToggle = this.submitButtonHiddenToggle.bind(this);
     }
 
     handleFlipCard() {
@@ -39,6 +41,10 @@ class TeenyUI extends Component {
         });
     }
 
+    submitButtonHiddenToggle() {
+        this.setState({ submitButtonHidden: !this.state.submitButtonHidden });
+    }
+
     render() {
         return (
             <div className="limiter">
@@ -48,12 +54,15 @@ class TeenyUI extends Component {
                             formSubmit={this.handleFormSubmit}
                             flipCard={this.handleFlipCard}
                             setUrls={this.setUrls}
+                            submitButtonHidden={this.state.submitButtonHidden}
+                            submitButtonHiddenToggle={this.submitButtonHiddenToggle}
                         />
 
                         <TeenyUIBack
                             longUrl={this.state.longUrl}
                             teenyUrl={this.state.teenyUrl}
                             flipCard={this.handleFlipCard}
+                            submitButtonHiddenToggle={this.submitButtonHiddenToggle}
                         />
                     </ReactCardFlip>
                 </div>
