@@ -20,7 +20,8 @@ class TeenyUI extends Component {
 
         this.state = {
             teenyUrl: "",
-            isFlipped: false
+            isFlipped: false,
+            longUrl: ""
         };
 
         this.handleFlipCard = this.handleFlipCard.bind(this);
@@ -32,7 +33,8 @@ class TeenyUI extends Component {
         this.setState({ isFlipped: !this.state.isFlipped });
     }
 
-    handleFormSubmit(url) {
+    handleFormSubmit(url, originalUrl) {
+        this.setState({ longUrl: originalUrl });
         this.createTeeny(url);
     }
 
@@ -66,6 +68,7 @@ class TeenyUI extends Component {
                         />
 
                         <TeenyUIBack
+                            longUrl={this.state.longUrl}
                             teenyUrl={this.state.teenyUrl}
                             flipCard={this.handleFlipCard}
                         />

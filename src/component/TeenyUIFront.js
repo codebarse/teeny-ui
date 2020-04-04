@@ -15,6 +15,8 @@ import teenyIco from '../images/teeny.ico'
 const URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm;
 const HTTP = 'http://';
 const HTTPS = 'https://';
+const HAS_VAL_CLASS = 'has-val';
+const ALERT_VALIDATE_CLASS = 'alert-validate';
 
 class TeenyUIFront extends Component {
 
@@ -34,7 +36,7 @@ class TeenyUIFront extends Component {
 
     onInputBlur() {
         if (this.state.url.trim() !== "") {
-            this.setState({ hasVal: 'has-val' });
+            this.setState({ hasVal: HAS_VAL_CLASS });
         }
         else {
             this.setState({ hasVal: '' });
@@ -56,16 +58,17 @@ class TeenyUIFront extends Component {
     onFormSubmit(event) {
         event.preventDefault();
         let url = this.state.url.trim();
+        let originalUrl = url;
         if (url.match(URL_REGEX) && !url.startsWith(HTTP) && !url.startsWith(HTTPS)) {
             url = HTTP + url;
         }
         if (isWebUri(url)) {
-            this.props.formSubmit(url);
+            this.props.formSubmit(url, originalUrl);
             this.setState({ url: '' });
         }
         else {
             //show validate
-            this.setState({ alertValidate: 'alert-validate' });
+            this.setState({ alertValidate: ALERT_VALIDATE_CLASS });
         }
     }
 

@@ -12,22 +12,23 @@ import '../css/main.css';
 import teenyIco from '../images/teeny.ico'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+const COPY_URL = 'Copy Url';
+
 class TeenyUIBack extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            copyUrlText: 'Copy Url'
+            copyTeenyUrlText: COPY_URL
         };
 
-        this.onCopyToClipboard = this.onCopyToClipboard.bind(this);
+        this.onCopyTeenyUrlToClipboard = this.onCopyTeenyUrlToClipboard.bind(this);
     }
 
-    onCopyToClipboard() {
-
+    onCopyTeenyUrlToClipboard() {
         this.setState({
-            copyUrlText: 'Copied'
+            copyTeenyUrlText: 'Copied'
         });
     }
 
@@ -39,12 +40,12 @@ class TeenyUIBack extends Component {
                         <img src={teenyIco} alt='' />
                     </span>
                     <CopyToClipboard
-                        onCopy={this.onCopyToClipboard}
+                        onCopy={this.onCopyTeenyUrlToClipboard}
                         text={this.props.teenyUrl}
                     >
-                        <div className="wrap-input100 m-b-23 copy-url" onMouseLeave={() => { this.setState({ copyUrlText: 'Copy Url' }) }}
-                            copy-url={this.state.copyUrlText}>
-                            <span className="label-input100">Teeny Url</span>
+                        <div className="wrap-input100 m-b-23 copy-url" onMouseLeave={() => { this.setState({ copyTeenyUrlText: COPY_URL }) }}
+                            copy-url={this.state.copyTeenyUrlText}>
+                            <span className="label-input100">Teeny Url - {this.props.teenyUrl.length} characters</span>
                             {/*  → */}
                             <span className="focus-input100" data-symbol="→" />
                             <input
@@ -56,8 +57,22 @@ class TeenyUIBack extends Component {
                             />
                         </div>
                     </CopyToClipboard>
-                    <div className="text-right p-t-8 p-b-31">
+                                        <div className="text-right p-t-8 p-b-31">
                     </div>
+                    <div className="wrap-input100-2 m-b-23">
+                        <span className="label-input100-2">Long Url - {this.props.longUrl.length} characters</span>
+                        {/*  → */}
+                        <span className="focus-input100" data-symbol="→" />
+                        <input
+                            className="input100-2"
+                            type="text"
+                            name="url"
+                            value={this.props.longUrl}
+                            readOnly
+                        />
+                    </div>
+                    {/* <div className="text-right p-t-8 p-b-31">
+                    </div> */}
                     <div className="container-login100-form-btn">
                         <div className="wrap-login100-form-btn">
                             <div className="login100-form-bgbtn" />
