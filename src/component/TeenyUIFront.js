@@ -17,6 +17,8 @@ const HTTP = 'http://';
 const HTTPS = 'https://';
 const HAS_VAL_CLASS = 'has-val';
 const ALERT_VALIDATE_CLASS = 'alert-validate';
+const CONVERT = 'Convert';
+const LOADING = 'Loading...';
 
 class TeenyUIFront extends Component {
 
@@ -24,14 +26,19 @@ class TeenyUIFront extends Component {
         super(props);
 
         this.state = {
-            url: "",
+            url: '',
             hasVal: '',
-            alertValidate: ''
+            alertValidate: '',
+            teenyUrl: '',
+            originalUrl: '',
+            submitButtonText: CONVERT
         };
         this.onUrlInputChange = this.onUrlInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onInputBlur = this.onInputBlur.bind(this);
         this.onInputFocus = this.onInputFocus.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.createTeeny = this.createTeeny.bind(this);
     }
 
     onInputBlur() {
@@ -63,13 +70,43 @@ class TeenyUIFront extends Component {
             url = HTTP + url;
         }
         if (isWebUri(url)) {
-            this.props.formSubmit(url, originalUrl);
-            this.setState({ url: '' });
+            this.handleFormSubmit(url, originalUrl);
         }
         else {
             //show validate
             this.setState({ alertValidate: ALERT_VALIDATE_CLASS });
         }
+    }
+
+    handleFormSubmit(url, originalUrl) {
+        this.setState({ 
+            originalUrl: originalUrl,
+            submitButtonText: LOADING
+        });
+        this.createTeeny(url);
+    }
+
+    createTeeny(url) {
+        let baseUrl = window.location.origin.toString();
+        let data = {};
+        data["url"] = url;
+        fetch('https://api.teeny.sppk.in/teeny/create', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            return res.json();
+        }).then(data => {
+            this.setState({
+                teenyUrl: baseUrl.replace(/(^\w+:|^)\/\//, '') + '/' + data.teenyUrl,
+                url: '',
+                submitButtonText: CONVERT
+            })
+            this.props.setUrls(this.state.originalUrl, this.state.teenyUrl)
+            this.props.flipCard();
+        })
     }
 
     render() {
@@ -104,7 +141,7 @@ class TeenyUIFront extends Component {
                         <div className="wrap-login100-form-btn">
                             <div className="login100-form-bgbtn" />
                             <button className="login100-form-btn">
-                                Convert
+                                {this.state.submitButtonText}
                             </button>
                         </div>
                     </div>

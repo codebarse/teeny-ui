@@ -25,37 +25,18 @@ class TeenyUI extends Component {
         };
 
         this.handleFlipCard = this.handleFlipCard.bind(this);
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.createTeeny = this.createTeeny.bind(this);
+        this.setUrls = this.setUrls.bind(this);
     }
 
     handleFlipCard() {
         this.setState({ isFlipped: !this.state.isFlipped });
     }
 
-    handleFormSubmit(url, originalUrl) {
-        this.setState({ longUrl: originalUrl });
-        this.createTeeny(url);
-    }
-
-    createTeeny(url) {
-        let baseUrl = window.location.origin.toString();
-        let data = {};
-        data["url"] = url;
-        fetch('https://api.teeny.sppk.in/teeny/create', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => {
-            return res.json();
-        }).then(data => {
-            this.handleFlipCard();
-            this.setState({
-                teenyUrl: baseUrl.replace(/(^\w+:|^)\/\//, '') + '/' + data.teenyUrl
-            })
-        })
+    setUrls(longUrl, teenyUrl) {
+        this.setState({
+            longUrl: longUrl,
+            teenyUrl: teenyUrl
+        });
     }
 
     render() {
@@ -65,6 +46,8 @@ class TeenyUI extends Component {
                     <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="vertical">
                         <TeenyUIFront
                             formSubmit={this.handleFormSubmit}
+                            flipCard={this.handleFlipCard}
+                            setUrls={this.setUrls}
                         />
 
                         <TeenyUIBack

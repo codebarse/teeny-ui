@@ -18,7 +18,6 @@ class TeenyUIBack extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             copyTeenyUrlText: COPY_URL
         };
