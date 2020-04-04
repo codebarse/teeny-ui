@@ -1,27 +1,40 @@
 import React, { Component } from "react";
 
+const INVALID_URL_SPAN = <span>Invalid Url! Return to <a href='https://teeny.sppk.in'>Teeny Homepage</a></span>
+
 class TeenyRedirect extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url: ""
+            text: ""
         };
     }
 
     componentDidMount() {
-        fetch('https://api.teeny.sppk.in/teeny/' + this.props.id).then(result => {
-            return result.json();
-        }).then(data => {
-            console.log(data);
-            if(data.url !== undefined) {
-                window.location.replace(data.url);
+        fetch('https://api.teeny.sppk.in/teeny/' + this.props.id).then(response => {
+            const statusCode = response.status;
+            if (statusCode === 404) {
+                return [404, {}];
             }
-        })
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        }).then(([statusCode, data]) => {
+            if (statusCode === 200) {
+                window.location.replace(data.url);
+            } else {
+                this.setState({ text: INVALID_URL_SPAN });
+            }
+        }).catch(error => {
+            console.error(error);
+            return { name: "Network error", description: "Shhhh.... We are now sleeping and dreaming about new features to implement. Will be back soon" };
+        });
     }
 
     render() {
         return (
-            <div></div>
+            <div>
+                {this.state.text}
+            </div>
         );
     }
 }
