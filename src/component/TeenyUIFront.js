@@ -100,7 +100,7 @@ class TeenyUIFront extends Component {
             return res.json();
         }).then(data => {
             let teenyUrl = baseUrl.replace(/(^\w+:|^)\/\//, '') + '/' + data.teenyUrl;
-            this.props.setUrls(this.state.originalUrl, this.state.teenyUrl)
+            this.props.setUrls(this.state.originalUrl, teenyUrl);
             this.props.flipCard();
             this.setState({
                 teenyUrl: teenyUrl,
