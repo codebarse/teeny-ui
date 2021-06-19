@@ -11,7 +11,7 @@ class TeenyRedirect extends Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:8080/teeny/' + this.props.id).then(response => {
+        fetch('http://api.teeny.sppk.in/teeny/' + this.props.id).then(response => {
             const statusCode = response.status;
             if (statusCode === 404) {
                 return [404, {}];
