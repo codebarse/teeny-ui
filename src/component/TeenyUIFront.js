@@ -90,7 +90,7 @@ class TeenyUIFront extends Component {
         let baseUrl = window.location.origin.toString();
         let data = {};
         data["url"] = url;
-        fetch('http://api.teeny.sppk.in/teeny/create', {
+        fetch('https://api.teeny.sppk.in/teeny/create', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
