@@ -27,13 +27,16 @@ class TeenyUIFront extends Component {
 
         this.state = {
             url: '',
+            customKey: '',
             hasVal: '',
-            alertValidate: '',
+            alertUrlValidate: '',
+            alertCustomKeyValidate: '',
             teenyUrl: '',
             originalUrl: '',
             submitButtonText: CONVERT
         };
         this.onUrlInputChange = this.onUrlInputChange.bind(this);
+        this.onCustomKeyInputChange = this.onCustomKeyInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onInputBlur = this.onInputBlur.bind(this);
         this.onInputFocus = this.onInputFocus.bind(this);
@@ -52,44 +55,53 @@ class TeenyUIFront extends Component {
 
     onInputFocus() {
         //hide validate
-        this.setState({ alertValidate: '' });
+        this.setState({ alertUrlValidate: '' });
     }
 
     onUrlInputChange(event) {
         this.setState({
             url: event.target.value,
-            alertValidate: ''
+            alertUrlValidate: ''
+        });
+    }
+
+    onCustomKeyInputChange(event) {
+        this.setState({
+            customKey: event.target.value,
+            alertCustomKeyValidate: ''
         });
     }
 
     onFormSubmit(event) {
         event.preventDefault();
         let url = this.state.url.trim();
+        let customKey = this.state.customKey.trim();
         let originalUrl = url;
         if (url.match(URL_REGEX) && !url.startsWith(HTTP) && !url.startsWith(HTTPS)) {
             url = HTTP + url;
         }
         if (isWebUri(url)) {
-            this.handleFormSubmit(url, originalUrl);
+            this.handleFormSubmit(url, originalUrl, customKey);
         }
         else {
             //show validate
-            this.setState({ alertValidate: ALERT_VALIDATE_CLASS });
+            this.setState({ alertUrlValidate: ALERT_VALIDATE_CLASS });
         }
     }
 
-    handleFormSubmit(url, originalUrl) {
+    handleFormSubmit(url, originalUrl, customKey) {
         this.setState({ 
             originalUrl: originalUrl,
             submitButtonText: LOADING
         });
-        this.createTeeny(url);
+        this.createTeeny(url, customKey);
     }
 
-    createTeeny(url) {
+    createTeeny(url, customKey) {
         let baseUrl = window.location.origin.toString();
         let data = {};
         data["url"] = url;
+        data["customKey"] = customKey;
         fetch('https://api.teeny.sppk.in/teeny/create', {
             method: 'POST',
             body: JSON.stringify(data),
@@ -105,6 +117,7 @@ class TeenyUIFront extends Component {
             this.setState({
                 teenyUrl: teenyUrl,
                 url: '',
+                customKey: '',
                 submitButtonText: CONVERT
             })
         })
@@ -115,15 +128,13 @@ class TeenyUIFront extends Component {
             <div className="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
                 <form className="login100-form validate-form" onSubmit={this.onFormSubmit}>
                     <span className="login100-form-title p-b-49">
-                        {/* Teeny Url */}
                         <img src={teenyIco} alt='' />
                     </span>
                     <div
-                        className={`wrap-input100 validate-input m-b-23 ${this.state.alertValidate}`}
+                        className={`wrap-input100 validate-input m-b-23 ${this.state.alertUrlValidate}`}
                         data-validate="Invalid Url"
                     >
                         <span className="label-input100">Long Url</span>
-                        {/* 🔗 ⮕*/}
                         <span className="focus-input100" data-symbol='→' />
                         <input
                             className={`input100 ${this.state.hasVal}`}
@@ -136,6 +147,25 @@ class TeenyUIFront extends Component {
                             onBlur={this.onInputBlur}
                         />
                     </div>
+
+                    <div
+                        className={`wrap-input80 validate-input m-b-23 ${this.state.alertCustomKeyValidate}`}
+                        data-validate="Invalid Url"
+                    >
+                        <span className="label-input80">Custom Name (Optional)</span>
+                        <span className="focus-input80" data-symbol='teeny.sppk.in/' />
+                        <input
+                            className={`input80 ${this.state.hasVal}`}
+                            type="text"
+                            name="customKey"
+                            placeholder="customName"
+                            onFocus={this.onInputFocus}
+                            value={this.state.customKey}
+                            onChange={this.onCustomKeyInputChange}
+                            onBlur={this.onInputBlur}
+                        />
+                    </div>
+
                     <div className="text-right p-t-8 p-b-31">
                     </div>
                     <div className="container-login100-form-btn">
