@@ -19,6 +19,10 @@ const HAS_VAL_CLASS = 'has-val';
 const ALERT_VALIDATE_CLASS = 'alert-validate';
 const CONVERT = 'Convert';
 const LOADING = 'Loading...';
+const ERROR = 'Error!!! Try-again';
+const NAME_ALREADY_EXISTS = 'Name already exists';
+const INVALID_NAME = 'Invalid name';
+const keyRegex = /^[0-9a-zA-Z]+$/;
 
 class TeenyUIFront extends Component {
 
@@ -31,6 +35,7 @@ class TeenyUIFront extends Component {
             hasVal: '',
             alertUrlValidate: '',
             alertCustomKeyValidate: '',
+            alertCustomKeyValidateText: NAME_ALREADY_EXISTS,
             teenyUrl: '',
             originalUrl: '',
             submitButtonText: CONVERT
@@ -42,6 +47,8 @@ class TeenyUIFront extends Component {
         this.onInputFocus = this.onInputFocus.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.createTeeny = this.createTeeny.bind(this);
+        this.isKeyAvailabile = this.isKeyAvailabile.bind(this);
+        this.isValidKey = this.isValidKey.bind(this);
     }
 
     onInputBlur() {
@@ -66,9 +73,45 @@ class TeenyUIFront extends Component {
     }
 
     onCustomKeyInputChange(event) {
-        this.setState({
-            customKey: event.target.value,
-            alertCustomKeyValidate: ''
+        let alert = this.state.alertCustomKeyValidate;
+        let key = event.target.value
+        let keyPromise = Promise.resolve();
+        let alertText = NAME_ALREADY_EXISTS;
+        if(event.target.value === '') {
+            alert = '';
+        } else if(this.isValidKey(key)) {
+            keyPromise = this.isKeyAvailabile(key).then( data => {
+                if(data === false) {
+                    alert = ALERT_VALIDATE_CLASS;
+                } else {
+                    alert = '';
+                }
+            });
+        } else {
+            alert = ALERT_VALIDATE_CLASS;
+            alertText = INVALID_NAME;
+        }
+
+        Promise.all([keyPromise]).then(() => {
+            this.setState({
+                customKey: key,
+                alertCustomKeyValidate: alert,
+                alertCustomKeyValidateText: alertText
+            });
+        });
+
+    }
+
+    isValidKey(key) {
+        return key.match(keyRegex);
+    }
+
+    isKeyAvailabile(customKey) {
+        return fetch('https://api.teeny.sppk.in/teeny/checkKeyAvailability?customKey=' + customKey).then(response => {
+            return response.json();
+        }).catch (error => {
+            console.error(error);
+            return { name: "Network error", description: "Shhhh.... We are now sleeping and dreaming about new features to implement. Will be back soon" };
         });
     }
 
@@ -109,18 +152,31 @@ class TeenyUIFront extends Component {
                 'Content-Type': 'application/json'
             }
         }).then(res => {
-            return res.json();
-        }).then(data => {
-            let teenyUrl = baseUrl.replace(/(^\w+:|^)\/\//, '') + '/' + data.teenyUrl;
-            this.props.setUrls(this.state.originalUrl, teenyUrl);
-            this.props.flipCard();
-            this.setState({
-                teenyUrl: teenyUrl,
-                url: '',
-                customKey: '',
-                submitButtonText: CONVERT
-            })
-        })
+            return Promise.all([res.status, res.json()]);
+        }).then(([statusCode, data]) => {
+            if (statusCode !== 200) {
+                console.log(statusCode);
+                this.setState({ 
+                    submitButtonText: ERROR
+                });
+            } else {
+                let teenyUrl = baseUrl.replace(/(^\w+:|^)\/\//, '') + '/' + data.teenyUrl;
+                this.props.setUrls(this.state.originalUrl, teenyUrl);
+                this.props.flipCard();
+                this.setState({
+                    teenyUrl: teenyUrl,
+                    url: '',
+                    customKey: '',
+                    submitButtonText: CONVERT
+                })
+            }
+        }).catch(error => {
+            console.error(error);
+            this.setState({ 
+                submitButtonText: ERROR
+            });
+            return { name: "Network error", description: "Shhhh.... We are now sleeping and dreaming about new features to implement. Will be back soon" };
+        });
     }
 
     render() {
@@ -150,7 +206,7 @@ class TeenyUIFront extends Component {
 
                     <div
                         className={`wrap-input80 validate-input m-b-23 ${this.state.alertCustomKeyValidate}`}
-                        data-validate="Invalid Url"
+                        data-validate={this.state.alertCustomKeyValidateText}
                     >
                         <span className="label-input80">Custom Name (Optional)</span>
                         <span className="focus-input80" data-symbol='teeny.sppk.in/' />
