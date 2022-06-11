@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-
-const INVALID_URL_SPAN = <span>Invalid Url! Return to <a href='https://teeny.sppk.in'>Teeny Homepage</a></span>
+import * as constants from './Constants'
 
 class TeenyRedirect extends Component {
     constructor(props) {
@@ -11,7 +10,7 @@ class TeenyRedirect extends Component {
     }
 
     componentDidMount() {
-        fetch('https://api.teeny.sppk.in/teeny/' + this.props.id).then(response => {
+        fetch(constants.BACKEND_API + '/teeny/' + this.props.id).then(response => {
             const statusCode = response.status;
             if (statusCode === 404) {
                 return [404, {}];
@@ -22,7 +21,7 @@ class TeenyRedirect extends Component {
             if (statusCode === 200) {
                 window.location.replace(data.url);
             } else {
-                this.setState({ text: INVALID_URL_SPAN });
+                this.setState({ text: constants.INVALID_URL_SPAN });
             }
         }).catch(error => {
             console.error(error);

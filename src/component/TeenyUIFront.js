@@ -11,6 +11,7 @@ import '../css/util.css';
 import '../css/main.css';
 import { isWebUri } from 'valid-url';
 import teenyIco from '../images/teeny.ico'
+import * as constants from './Constants'
 
 const URL_REGEX = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/gm;
 const HTTP = 'http://';
@@ -107,7 +108,7 @@ class TeenyUIFront extends Component {
     }
 
     isKeyAvailabile(customKey) {
-        return fetch('https://api.teeny.sppk.in/teeny/checkKeyAvailability?customKey=' + customKey).then(response => {
+        return fetch(constants.BACKEND_API + '/teeny/checkKeyAvailability?customKey=' + customKey).then(response => {
             return response.json();
         }).catch (error => {
             console.error(error);
@@ -145,7 +146,7 @@ class TeenyUIFront extends Component {
         let data = {};
         data["url"] = url;
         data["customKey"] = customKey;
-        fetch('https://api.teeny.sppk.in/teeny/create', {
+        fetch(constants.BACKEND_API + '/teeny/create', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -209,7 +210,7 @@ class TeenyUIFront extends Component {
                         data-validate={this.state.alertCustomKeyValidateText}
                     >
                         <span className="label-input80">Custom Name (Optional)</span>
-                        <span className="focus-input80" data-symbol='teeny.sppk.in/' />
+                        <span className="focus-input80" data-symbol='teeny.babymonks.com/' />
                         <input
                             className={`input80 ${this.state.hasVal}`}
                             type="text"
